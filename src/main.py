@@ -1,4 +1,5 @@
 import os
+import sys
 from markdown_blocks import markdown_to_html_node  # Assuming you have a module for this conversion
 
 def extract_title(markdown_file):
@@ -27,10 +28,12 @@ def generate_page(from_path, template_path, output_path):
     # Read the template content
     with open(template_path, 'r', encoding='utf-8') as f:
         template_content = f.read()
-    print(f"Title extracted from '{from_path}': '{title}'")
+
     # Replace placeholders in the template
     html_content = template_content.replace('{{ Title }}', title)
     html_content = html_content.replace('{{ Content }}', markdown_to_html_node(markdown_content).to_html()) 
+    html_content = html_content.replace('href="/', f'href="{from_path}/')
+    html_content = html_content.replace('src="/', f'src="{from_path}/')
     
     # Write the generated HTML to the output path
     with open(output_path, 'w', encoding='utf-8') as f:
@@ -89,8 +92,13 @@ def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
             generate_pages_recursive(source_item_path, template_path, destination_item_path)    
     
 def main():
+    if len(sys.argv) > 1:
+        basepath = f'{sys.argv[1]}/'
+    else:
+        basepath = ""
+    
     source_directory = "static"
-    destination_directory = "public"
+    destination_directory = f"{basepath}docs"
     generate_pages_recursive("content", "template.html", destination_directory)
     # generate_page("content/index.md", "template.html", "public/index.html")
     # generate_page("content/blog/glorfindel/index.md", "template.html", "public/blog/glorfindel/index.html")
