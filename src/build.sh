@@ -1,0 +1,1 @@
+python3 src/main.py "https://github.com/joes-svg/static_site"

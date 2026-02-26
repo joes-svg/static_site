@@ -32,8 +32,8 @@ def generate_page(from_path, template_path, output_path):
     # Replace placeholders in the template
     html_content = template_content.replace('{{ Title }}', title)
     html_content = html_content.replace('{{ Content }}', markdown_to_html_node(markdown_content).to_html()) 
-    html_content = html_content.replace('href="/', f'href="{from_path}/')
-    html_content = html_content.replace('src="/', f'src="{from_path}/')
+    # html_content = html_content.replace('href="/', f'href="{from_path}/')
+    # html_content = html_content.replace('src="/', f'src="{from_path}/')
     
     # Write the generated HTML to the output path
     with open(output_path, 'w', encoding='utf-8') as f:
